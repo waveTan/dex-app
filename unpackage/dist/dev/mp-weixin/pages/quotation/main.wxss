@@ -1,0 +1,51 @@
+.container .segmented-control {
+  margin: 0.5rem auto 0;
+}
+.tab-bar {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  margin: 20rpx 20rpx;
+  border: 2rpx solid #cfcfcf;
+  border-radius: 10rpx;
+}
+.tab-bar .tab-bar-item {
+  text-align: center;
+  height: 70rpx;
+  line-height: 70rpx;
+}
+.tab-bar .active {
+  background: #1478ca;
+  color: #ffffff;
+}
+.rank {
+  padding: 10rpx 0rpx;
+}
+.rank .title {
+  padding: 10rpx 20rpx;
+}
+.rank .item {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  padding: 20rpx 20rpx;
+}
+.rank .item .n {
+  width: 35%;
+}
+.rank .item .p {
+  width: 35%;
+}
+.rank .item .t {
+  width: 30%;
+  text-align: right;
+}
+.rank .item .t .light {
+  display: block;
+  width: 150rpx;
+  color: #ffffff;
+  text-align: center;
+  float: right;
+  border-radius: 4rpx;
+}
+

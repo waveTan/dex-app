@@ -1,0 +1,53 @@
+@charset "UTF-8";
+/* 页面左右间距 */
+/* 文字尺寸 */
+/*文字颜色*/
+/* 边框颜色 */
+/* 图片加载中颜色 */
+/* 行为相关颜色 */
+.segmented-control {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  width: 75%;
+  font-size: 28rpx;
+  box-sizing: border-box;
+  margin: 0 auto;
+  overflow: hidden;
+  border: 1rpx solid;
+  border-radius: 10rpx;
+}
+.segmented-control.text {
+  border: 0;
+  border-radius: 0;
+}
+.segmented-control-item {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  text-align: center;
+  line-height: 60rpx;
+  box-sizing: border-box;
+  border-left: 1rpx solid;
+}
+.segmented-control-item.active {
+  color: #fff;
+}
+.segmented-control-item.text {
+  border-left: 0;
+  color: #000;
+}
+.segmented-control-item.text.active {
+  border-bottom-style: solid;
+}
+.segmented-control-item:first-child {
+  border-left-width: 0;
+}
+

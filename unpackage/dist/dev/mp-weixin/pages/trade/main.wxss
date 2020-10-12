@@ -1,0 +1,16 @@
+
+.content.data-v-abecb21a {
+	margin-top: 20rpx;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+}
+.content .trade.data-v-abecb21a {
+	width: 60%;
+	padding-left: 20rpx;
+	padding-right: 20rpx;
+}
+.content .position.data-v-abecb21a {
+	width: 40%;
+}
+

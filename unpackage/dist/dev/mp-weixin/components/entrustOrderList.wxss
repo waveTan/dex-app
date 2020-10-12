@@ -1,0 +1,48 @@
+
+.order .title.data-v-3abb497c{
+  	padding: 0 20rpx 20rpx 20rpx;
+}
+.order .item.data-v-3abb497c{
+	padding: 20rpx 20rpx 20rpx 20rpx;
+}
+.order .item .opt.data-v-3abb497c{
+	  position: relative;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: baseline;
+	-webkit-align-items: baseline;
+	        align-items: baseline;
+}
+.order .item .opt .cancel.data-v-3abb497c{
+	  position: absolute;
+	  top: 0;
+	  right: 0;
+  	width: 80rpx;
+	height: 50rpx;
+	line-height: 50rpx;
+	font-size: 24rpx;
+	padding: 0;
+}
+.order .item .thead.data-v-3abb497c{
+	  display: -webkit-box;
+	  display: -webkit-flex;
+	  display: flex;
+	  color: #8e9fa7;
+}
+.order .item .price.data-v-3abb497c{
+	width: 35%;
+}
+.order .item .num.data-v-3abb497c{
+  	  width: 35%;
+}
+.order .item .turnover.data-v-3abb497c{
+  	  width: 30%;
+	  text-align: right;
+}
+.order .item .tbody.data-v-3abb497c{
+  	  display: -webkit-box;
+  	  display: -webkit-flex;
+  	  display: flex;
+}
+

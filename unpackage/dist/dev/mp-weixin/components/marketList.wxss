@@ -1,0 +1,34 @@
+
+.rank.data-v-5b384aff {
+	padding: 10rpx 0rpx;
+	margin: 0.5rem 0 0 0;
+}
+.rank .title.data-v-5b384aff {
+	padding: 10rpx 20rpx;
+}
+.rank .item.data-v-5b384aff {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	padding: 20rpx 20rpx;
+}
+.rank .item .n.data-v-5b384aff {
+	width: 35%;
+}
+.rank .item .p.data-v-5b384aff {
+	width: 35%;
+}
+.rank .item .t.data-v-5b384aff {
+	width: 30%;
+	text-align: right;
+	margin: 0.5rem 0 0 0;
+}
+.rank .item .t .light.data-v-5b384aff {
+	display: block;
+	width: 150rpx;
+	color: #ffffff;
+	text-align: center;
+	float: right;
+	border-radius: 4rpx;
+}
+

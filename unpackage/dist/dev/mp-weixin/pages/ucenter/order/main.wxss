@@ -1,0 +1,65 @@
+@charset "UTF-8";
+/* 页面左右间距 */
+/* 文字尺寸 */
+/*文字颜色*/
+/* 边框颜色 */
+/* 图片加载中颜色 */
+/* 行为相关颜色 */
+page, .container {
+  background: #f8f8f8;
+  height: 100%;
+}
+.container .tab {
+  padding-top: 20rpx;
+  padding-bottom: 20rpx;
+  padding-left: 20rpx;
+  color: #0952c3;
+  font-size: 32rpx;
+}
+.container .tab text {
+  padding-right: 20rpx;
+  font-weight: bold;
+}
+.container .tab .active {
+  font-size: 40rpx;
+  color: #000000;
+}
+.container .swiper-box {
+  height: calc(100% - 110rpx);
+}
+.container .list-scroll-content {
+  height: 100%;
+}
+.container .uni-swiper-item {
+  height: auto;
+}
+.container .list .item .title {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  padding: 20rpx 20rpx;
+}
+.container .list .item .title .n {
+  width: 50%;
+}
+.container .list .item .title .g {
+  width: 50%;
+  text-align: right;
+}
+.container .list .item .thead {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  padding: 0 20rpx 10rpx 20rpx;
+}
+.container .list .item .thead .l {
+  width: 35%;
+}
+.container .list .item .thead .c {
+  width: 35%;
+}
+.container .list .item .thead .r {
+  width: 30%;
+  text-align: right;
+}
+
