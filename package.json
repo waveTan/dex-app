@@ -10,6 +10,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@dcloudio/uni-ui": "0.0.6"
+    "@dcloudio/uni-ui": "0.0.6",
+    "bignumber.js": "^9.0.1",
+    "copy-to-clipboard": "^3.3.1",
+    "nerve-sdk-js": "^1.0.1"
   }
 }

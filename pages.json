@@ -81,6 +81,12 @@
 			}
 		},
 		{
+			"path": "pages/assets/set",
+			"style": {
+				"navigationBarTitleText": "账户设置"
+			}
+		},
+		{
 			"path": "pages/login/login",
 			"style": {
 				"navigationBarTitleText": "登录"

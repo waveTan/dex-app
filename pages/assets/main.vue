@@ -7,8 +7,8 @@
 				</xfl-select>
 			</view>
 			<view class="t-icon">
-				<text class="iconfont iconfuzhi icon"></text>
-				<text class="iconfont iconshezhi icon"></text>
+				<!-- <text class="iconfont iconfuzhi icon"></text> -->
+				<text class="iconfont iconshezhi icon" @click="toUrl('set')"></text>
 			</view>
 
 		</view>
@@ -138,36 +138,48 @@
 
 		},
 		methods: {
-
+			toUrl(name) {
+				console.log(name);
+				uni.navigateTo({
+					url: "/pages/assets/set"
+					//url: "/pages/trade/kline/main?symbol=" + e.symbol
+				})
+			}
 		}
 	}
 </script>
 <style scoped lang="less">
 	@import '../../static/font/iconfont.css';
-	.container{
-		.total{
+
+	.container {
+		.total {
 			padding: 20upx 20upx 0 20upx;
 			height: 1.6rem;
-			.t-selsect{
+
+			.t-selsect {
 				width: 70%;
 				float: left;
 			}
-			.t-icon{
+
+			.t-icon {
 				margin: 0 2% 0 0;
 				float: right;
 			}
 		}
 	}
-	
-	.header{
+
+	.header {
 		padding: 0 20upx 20upx 20upx;
 		height: 1rem;
+
 		.l {
 			float: left;
 		}
+
 		.r {
 			float: right;
 			display: block;
+
 			.checkbox {
 				zoom: 60%;
 				vertical-align: middle;
