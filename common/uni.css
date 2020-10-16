@@ -100,6 +100,12 @@ form {
 .uni-text-gray{
 	color: #8c9fad;
 }
+.uni-text-green{
+	color: #09BB07;
+}
+.uni-text-red{
+	color: #D64c58;
+}
 .uni-text-small {
 	font-size:24upx;
 }
