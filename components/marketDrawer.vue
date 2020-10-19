@@ -1,5 +1,5 @@
 <template>
-	<view class="drawer">
+	<view class="uni-bg2 drawer">
 		<scroll-view class="uni-swiper-tab" scroll-x :scroll-left="scrollLeft">
 		    <view class="swiper-tab-list uni-bold"><label>自选</label></view>
 			<view @click="onClick" class="swiper-tab-list uni-bold" v-for="(item, index) in areaList_" :key="index"><label :class="index == 0 ? 'active' : ''">{{item.name}}</label></view>

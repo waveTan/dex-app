@@ -1,19 +1,19 @@
 <template>
-	<view class="container">
-		<view class="top">
-			<view class="fl">
-				<text class="iconfont iconbiaoqiankuozhan_jiaoyi-179 icon"></text>
-				<text class="name font14 fw">NVT/NULS</text>
-				<text class="amount font12">+ 5.26%</text>
+	<view class="uni-bg container">
+		<view class="uni-bg2 top">
+			<view class="uni-left">
+				<!-- <text class="iconfont iconbiaoqiankuozhan_jiaoyi-179 icon"></text> -->
+				<text class="name">NVT/NULS</text>
+				<text class="amount green">+5.26%</text>
 			</view>
-			
-			<view class="fr">
-				<text class="iconfont iconKxiantu icon"></text>
-				<text class="iconfont iconshoucang icon"></text>
+
+			<view class="uni-right">
+				<!-- <text class="iconfont iconKxiantu icon"></text> -->
+				<u-icon name="star"></u-icon>
 			</view>
-			
+
 		</view>
-		<view class="content">
+		<view class="uni-bg2 content">
 			<view class="position">
 				<positionList v-on:depthChange="depthChange"></positionList>
 			</view>
@@ -169,31 +169,64 @@
 
 <style lang="less">
 	@import '../../static/font/iconfont.css';
-	.container{
-		.top{
-			.fl{
-				float: left;
+
+	.container {
+		.top {
+			height: 2.8rem;
+
+			.uni-left {
+				.name {
+					line-height: 2.8rem;
+					display: block;
+					float: left;
+					margin: 0 0 0 0.5rem;
+					font-size: 1.2rem;
+				}
+
+				.amount {
+					display: block;
+					float: right;
+					border-radius: 0.1rem;
+					font-size: 0.20rem;
+					padding: 0.09rem 0.5rem;
+					margin: 0.7rem 0 0 0.5rem;
+				}
+
+				.red {
+					color: #D64C58;
+					background-color: #291b2c;
+				}
+
+				.green {
+					color: #2DBB6D;
+					background-color: #17272e;
+				}
 			}
-			.fr{
-				float: right;
+
+			.uni-right {
+				margin: 0.75rem 0.5rem 0 0;
+
+				.u-icon {
+					font-size: 1.2rem;
+				}
 			}
 		}
-	}
-	
-	.content {
-		float: none;
-		clear: both;
-		margin-top: 20upx;
-		display: flex;
-	}
 
-	.content .trade {
-		width: 60%;
-		padding-left: 20upx;
-		padding-right: 20upx;
-	}
+		.content {
+			float: none;
+			clear: both;
+			display: flex;
 
-	.content .position {
-		width: 40%;
+			.trade {
+				width: 60%;
+				padding-left: 20upx;
+				padding-right: 20upx;
+			}
+
+			.position {
+				width: 40%;
+			}
+		}
+
 	}
 </style>

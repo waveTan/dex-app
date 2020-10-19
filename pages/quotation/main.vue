@@ -1,7 +1,12 @@
 <template>
-	<view class="container">
-		<uni-segmented-control :current="current" :values="items" v-on:clickItem="onClickItem" :styleType="styleType"
-		 :activeColor="activeColor"></uni-segmented-control>
+	<view class="uni-bg2 container">
+		<view class="top-list">
+			<view class="lis lis-choose">自选</view>
+			<view v-for="(item, index) in topList" :key="index" class="lis">
+				{{item.name}}
+			</view>
+		</view>
+		<view class="uni-clear"></view>
 		<marketList :list="marketList"></marketList>
 	</view>
 </template>
@@ -11,24 +16,26 @@
 		mapState,
 		mapActions
 	} from 'vuex'
-	import {
-		uniSegmentedControl
-	} from '@dcloudio/uni-ui'
 
 	import marketList from '../../components/marketList.vue'
 
 	export default {
 		data() {
 			return {
-				items: [
-					'自选',
-					'NULS',
-					'BRIDGE',
-					'OpenList',
+				topList: [{
+						name: 'NULS',
+						key: 1
+					},
+					{
+						name: 'BRIDGE',
+						key: 2
+					},
+					{
+						name: 'OpenList',
+						key: 3
+					},
 				],
-				current: 0,
-				activeColor: '#007aff',
-				styleType: 'button',
+
 				marketList: []
 			}
 		},
@@ -75,7 +82,6 @@
 			];
 		},
 		components: {
-			uniSegmentedControl,
 			marketList
 		},
 		computed: {
@@ -92,61 +98,25 @@
 </script>
 
 <style lang="less">
-	.container{
-		.segmented-control{
+	.container {
+		padding: 0.5rem 0 0 0;
+
+		.top-list {
 			margin: 0.5rem auto 0;
+			width: 90%;
+			.lis {
+				float: left;
+				width: 5rem;
+				text-align: center;
+				border: 1upx solid #2f314b;
+				height: 2rem;
+				line-height: 2rem;
+			}
+			.lis-choose{
+				background-color: #149af2;
+				border-color:#149af2 ;
+			}
 		}
-	}
-	.tab-bar {
-		display: flex;
-		margin: 20upx 20upx;
-		border: 2upx solid #cfcfcf;
-		border-radius: 10upx;
-	}
 
-	.tab-bar .tab-bar-item {
-		text-align: center;
-		height: 70upx;
-		line-height: 70upx;
-	}
-
-	.tab-bar .active {
-		background: #1478ca;
-		color: #ffffff;
-	}
-
-	.rank {
-		padding: 10px 0px;
-	}
-
-	.rank .title {
-		padding: 10px 20px;
-	}
-
-	.rank .item {
-		display: flex;
-		padding: 20px 20px;
-	}
-
-	.rank .item .n {
-		width: 35%;
-	}
-
-	.rank .item .p {
-		width: 35%;
-	}
-
-	.rank .item .t {
-		width: 30%;
-		text-align: right;
-	}
-
-	.rank .item .t .light {
-		display: block;
-		width: 150px;
-		color: #ffffff;
-		text-align: center;
-		float: right;
-		border-radius: 4upx;
 	}
 </style>

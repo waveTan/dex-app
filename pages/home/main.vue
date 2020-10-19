@@ -100,7 +100,9 @@
 <style lang="less">
 		@import './../../static/font/iconfont.css';
 	.home {
+		background-color: #FFFFFF;
 		.why {
+			
 			margin: 0.02rem 0.5rem 0;
 		
 			.title {
@@ -119,9 +121,12 @@
 		}
 		
 		.how {
-			margin: 0.2rem 1rem 0;
+			background-color: #FFFFFF;
+			padding: 0.2rem 1rem 0;
+			height: 11rem;
 			.h_list{
 				margin: 1rem 0 0 0;
+				background-color: #FFFFFF;
 				.li{
 					width: 22%;
 					text-align: center;

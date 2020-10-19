@@ -1,8 +1,8 @@
 <template>
-  <view class="pmain">
+  <view class="uni-bg2 pmain">
     <view class="item">
-			<text class="price">价格</text>
-			<text class="num">数量</text>
+			<text class="uni-text-gray price">价格</text>
+			<text class="uni-text-gray num">数量</text>
 		</view>
 		<view class="item uni-down">
 			<text class="price">521.5</text>
@@ -32,7 +32,7 @@
 		
 		<view class="current-price">
 			<view class="uni-h5 uni-bold uni-up usdt">521.5</view>
-			<view class="uni-h7 cny uni-text-gray">≈28767.23 CNY</view>
+			<view class="uni-h7 cny uni-text-gray"> $28767.23 CNY</view>
 		</view>
 		
 		<view class="item uni-up">
@@ -107,6 +107,7 @@ export default {
     position: relative;
     justify-content: space-between;
     text-align: left;
+		padding: 0.5rem 0 0 0.5rem;
   }
   .pmain .item{
 		position: relative;
@@ -142,8 +143,14 @@ export default {
 		margin: 10upx 0;
 	}
 	.pmain .current-price .usdt{
+		float: left;
 		
 	}
+	.pmain .current-price .cny{
+		float: left;
+		margin: 0.18rem 0 0 0.5rem;
+	}
+	
 	.pmain .depth{
 		position: relative;
 		margin-top: 10upx;
@@ -159,7 +166,7 @@ export default {
 		top: 80upx;
 		width: 100%;
 		z-index: 9999999999;
-		background: #ffffff;
+		//background: #ffffff;
 		display: inline-block;
 		border-radius: 20px;
 	}

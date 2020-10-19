@@ -13,6 +13,10 @@
 }
 
 /*通用 */
+.uni-body{
+	background-color: #0A0B18;
+}
+
 view{
 	font-size:28upx; 
 	line-height:1.8;
@@ -106,6 +110,9 @@ form {
 .uni-text-red{
 	color: #D64c58;
 }
+.uni-text-blue{
+	color: #007AFF;
+}
 .uni-text-small {
 	font-size:24upx;
 }
@@ -122,6 +129,12 @@ form {
 	margin-top:30upx;
 }
 /* 背景色 */
+.uni-bg{
+	background:#0A0B18; color:#FFF;
+}
+.uni-bg2{
+	background:#141627; color:#FFF;
+}
 .uni-bg-red{
 	background:#F76260; color:#FFF;
 }
@@ -138,7 +151,7 @@ form {
 	color: #d14b64;
 }
 .uni-bg-up {
-	background: #00b48e;
+	background: #2dbb6d;
 }
 .uni-bg-down {
 	background: #d14b64;
@@ -152,6 +165,16 @@ form {
 .uni-h6 {font-size: 24upx;}
 .uni-h7 {font-size: 22upx;}
 .uni-bold{font-weight:bold;}
+
+.uni-left{
+	float: left;
+}
+.uni-right{
+	float: right;
+}
+.uni-clear{
+	clear: both;
+}
 
 /* 文本溢出隐藏 */
 .uni-ellipsis {overflow: hidden; white-space: nowrap; text-overflow: ellipsis;}
@@ -1362,9 +1385,9 @@ m-input {
 /* 分界线 */
 .uni-gap{
 	width: 100%;
-	height: 20upx;
-	background: #f7f6fb;
-	margin: 30upx 0;
+	height: 5upx;
+	background: #0A0B18;
+	margin: 5upx 0;
 }
 .uni-divider{
     position: relative;

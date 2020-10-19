@@ -1,11 +1,11 @@
 <template>
 	<view class="swap">
-		<view class="top">
+		<view class="uni-bg2 top">
 			<view class="info">
-				<text class="title ">根据多个交易所实时价格综合计算并 上浮5% ，该功能主要用于兑换小额手续费</text>
+				<text class="uni-text-blue uni-h6">根据多个交易所实时价格综合计算并 上浮5% ，该功能主要用于兑换小额手续费</text>
 			</view>
 			<view class="info">
-				<text class="title">NerveNetwork去中心化执行闪兑任务，保证资产安全</text>
+				<text class="uni-h7 uni-text-gray">NerveNetwork去中心化执行闪兑任务，保证资产安全</text>
 			</view>
 		</view>
 
@@ -45,9 +45,11 @@
 
 				</view>
 				<view class="uni-btn-v">
-					<button form-type="submit">兑换</button>
+					<button form-type="submit" type="primary">兑换</button>
 				</view>
 			</form>
+		
+		
 		</view>
 
 	</view>
@@ -87,10 +89,11 @@
 
 	.swap {
 		.top {
-			padding: 0 0.5rem;
+			height: 5rem;
+			width: 100%;
 
 			.info {
-				margin: 0.5rem 0;
+				padding: 0.5rem 0.5rem 0 0.5rem;
 				line-height: 1rem;
 			}
 		}
@@ -98,6 +101,7 @@
 		.middle {
 			.m-form {
 				.title {
+					color: #777d97;
 					.fl {
 						display: block;
 						float: left;
@@ -106,6 +110,7 @@
 					.fr {
 						display: block;
 						float: right;
+						margin: 0 6.5rem 0 0;
 					}
 				}
 
@@ -116,7 +121,7 @@
 
 						.uni-input {
 							.uni-input-input {
-								border: 1px solid #c0c4cc;
+								border: 2upx solid #c0c4cc;
 							}
 						}
 					}

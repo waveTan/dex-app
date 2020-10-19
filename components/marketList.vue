@@ -2,9 +2,9 @@
 	<block>
 		<view class="rank">
 			<view class="item thead">
-				<view class="n uni-h7">名称</view>
-				<view class="p uni-h7">最新价</view>
-				<view class="t uni-h7">涨跌幅</view>
+				<view class="n uni-h7">名称 <u-icon name="arrow-upward"></u-icon></view>
+				<view class="p uni-h7">最新价 <u-icon name="arrow-downward"></u-icon></view>
+				<view class="t uni-h7">涨跌幅 <u-icon name="arrow-upward"></u-icon></view>
 			</view>
 			<view v-for="(item, index) in list_" :key="index" class="item uni-divider" @click="onClick(item)">
 				<view class="n">
@@ -46,7 +46,7 @@
 		methods: {
 			onClick(e) {
 				uni.navigateTo({
-					url: "/pages/trade/kline/main?symbol=" + e.symbol
+					url: "/pages/quotation/kline"
 				})
 			}
 		}
@@ -55,7 +55,7 @@
 
 <style scoped>
 	.rank {
-		padding: 10px 0px;
+		padding: 10px 0 0 0px;
 		margin: 0.5rem 0 0 0;
 	}
 
@@ -65,7 +65,7 @@
 
 	.rank .item {
 		display: flex;
-		padding: 20px 20px;
+		padding: 20px 20px 0;
 	}
 
 	.rank .item .n {

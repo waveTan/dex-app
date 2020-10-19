@@ -1,8 +1,8 @@
 <template>
-	<view class="order">
+	<view class="uni-bg2 order">
 		<view class="title uni-divider">
 			<text class="uni-h5 uni-bold">当前委托</text>
-			<text class="iconfont iconliebiao icon"></text>
+			<text class="iconfont iconliebiao icon uni-right"></text>
 		</view>
 		<view class="item uni-divider">
 			<view class="opt">

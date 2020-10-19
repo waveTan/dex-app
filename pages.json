@@ -36,6 +36,13 @@
 			}
 		},
 		{
+			"path": "pages/quotation/kline",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "行情"
+			}
+		},
+		{
 			"path": "pages/trade/main",
 			"style": {
 				"navigationBarTitleText": "交易",
@@ -67,7 +74,8 @@
 		{
 			"path": "pages/swap/main",
 			"style": {
-				"navigationBarTitleText": "币币闪兑"
+				"navigationBarTitleText": "币币闪兑",
+				"navigationStyle": "custom"
 			}
 		},
 		{
@@ -116,13 +124,14 @@
 	],
 	"globalStyle": {
 		"backgroundTextStyle": "light",
-		"navigationBarBackgroundColor": "#fafafa",
+		"navigationBarBackgroundColor": "#141627",
 		"navigationBarTitleText": "币币",
 		"navigationBarTextStyle": "black"
 	},
 	"tabBar": {
-		"color": "#130f13",
-		"selectedColor": "#0f0f0f",
+		"color": "#b6b8c7",
+		"selectedColor": "#1690e3",
+		"backgroundColor": "#141627",
 		"list": [{
 				"pagePath": "pages/home/main",
 				"text": "首页",
