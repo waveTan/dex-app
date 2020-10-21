@@ -95,21 +95,35 @@
 			"path": "pages/assets/set",
 			"style": {
 				"navigationBarTitleText": "账户管理",
-				"navigationBarTextStyle":"#ffffff"
+				"navigationBarTextStyle":"white"
 			}
 		},
 		{
 			"path": "pages/assets/newAddress",
 			"style": {
 				"navigationBarTitleText": "创建账户",
-				"navigationBarTextStyle":"#ffffff"
+				"navigationBarTextStyle":"white"
+			}
+		},
+		{
+			"path": "pages/assets/importKey",
+			"style": {
+				"navigationBarTitleText": "私钥导入",
+				"navigationBarTextStyle":"white"
 			}
 		},
 		{
 			"path": "pages/assets/back",
 			"style": {
 				"navigationBarTitleText": "备份账户",
-				"navigationBarTextStyle":"#ffffff"
+				"navigationBarTextStyle":"white"
+			}
+		},
+		{
+			"path": "pages/assets/backKey",
+			"style": {
+				"navigationBarTitleText": "备份私钥",
+				"navigationBarTextStyle":"white"
 			}
 		},
 		{

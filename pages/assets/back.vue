@@ -12,15 +12,17 @@
 		<view class="uni-clear list-b">
 			<u-button class="bnt p-bnt" type="primary" @click="backKey()">备份私钥</u-button>
 			<u-button class="bnt p-bnt" type="primary" @click="backKeystore()">备份Keystore</u-button>
-			<u-button class="bnt k-bnt">备份完成</u-button>
+			<u-button class="bnt k-bnt" @click="complete()">备份完成</u-button>
 		</view>
 
-		<passWord ref="password"></passWord>
+		<u-top-tips ref="uTips"></u-top-tips>
+		<passWord ref="password" @passwordSubmit="backPassSubmit"></passWord>
 	</view>
 
 </template>
 
 <script>
+	import nerve from 'nerve-sdk-js';
 	import passWord from '@/components/passWord.vue';
 	export default {
 		data() {
@@ -54,13 +56,39 @@
 
 			//备份私钥
 			backKey() {
-				console.log('backKey');
-				this.$refs.password.$emit('childMethod', '发送给方法一的数据')
+				this.$refs.password.$emit('showPassWord', true)
 			},
-			
+
 			//备份keystore
 			backKeystore() {
 				console.log('backKeystore')
+			},
+
+			//获取密码
+			backPassSubmit(passWord) {
+				this.backAddressInfo.pri = nerve.decrypteOfAES(this.backAddressInfo.aesPri, passWord);
+				//console.log(this.backAddressInfo);
+
+				if (!this.backAddressInfo.pri) {
+					this.$refs.uTips.show({
+						title: '密码错误，请输入正确的密码！',
+						type: 'error',
+						duration: '2300'
+					})
+					return;
+				}
+
+				uni.setStorageSync('backInfo', JSON.stringify(this.backAddressInfo));
+				uni.navigateTo({
+					url: '/pages/assets/backKey'
+				})
+			},
+			
+			//完成备份
+			complete(){
+				uni.navigateTo({
+					url: '/pages/assets/set'
+				})
 			}
 
 		}

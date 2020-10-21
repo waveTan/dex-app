@@ -25,7 +25,7 @@
 		data() {
 			return {
 				passWordVisible: false,
-				passValue:'',
+				passValue: '',
 			}
 		},
 		mounted() {
@@ -38,19 +38,26 @@
 		methods: {
 
 			monitoring() { // 监听事件
-				this.$on('childMethod', (res) => {
+				this.$on('showPassWord', (res) => {
 					//console.log(res);
-					this.passWordVisible = true;
+					this.passWordVisible = res;
 				})
 			},
 
 			//提交
 			passWordSubmit() {
 				//console.log();
-				if(!this.passValue){
+				if (!this.passValue) {
 					alert('请输入正确的密码！')
 				}
-				console.log(this.passValue);
+				//console.log(this.passValue);
+				this.$emit('passwordSubmit', this.passValue);
+				this.passWordVisible = false;
+
+				setTimeout(() => {
+					this.passValue = ''
+				}, 500)
+
 			},
 
 			//取消

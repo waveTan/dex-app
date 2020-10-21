@@ -1,46 +1,45 @@
 <template>
-	<view class="uni-bg2 new-address">
+	<view class="uni-bg2 import-key">
 		<view class="top">
-			<view class="titles">密码用来保护私钥授权，请不要使用过于简单的密码；</view>
-			<view class="titles">DEX不存储密码，也无法帮您找回，请务必记牢密码</view>
+			<view class="title uni-h4">使用私钥导入</view>
+			<view class="info uni-text-gray">将您的钱包私钥复制到下方输入框内</view>
 		</view>
 
-
-		<u-form :model="newAddressForm" ref="newAddressRef" :border-bottom="true" label-position="top" class="newAddress-form">
+		<u-form :model="keyImportForm" ref="keyImportRef" :border-bottom="true" label-position="top" class="import-form">
+			<u-form-item label="" prop="key">
+				<u-input v-model="keyImportForm.key" type="textarea" :border="border" placeholder='请输入私钥内容' />
+			</u-form-item>
 			<u-form-item label="" prop="password">
-				<u-input v-model="newAddressForm.password" :clearable="false" placeholder='请输入密码' type='password' :border="border" />
+				<u-input v-model="keyImportForm.password" :clearable="false" placeholder='请输入密码' type='password' :border="border" />
 			</u-form-item>
 			<u-form-item label="" prop="passwordTwo">
-				<u-input v-model="newAddressForm.passwordTwo" :clearable="false" placeholder='请输入重复密码' type='password' :border="border" />
-			</u-form-item>
-			<u-form-item>
-				<u-checkbox-group>
-					<u-checkbox v-model="newAddressForm.isAgree" :label-disabled="true">
-						我已仔细阅读并同意
-						<text class="uni-text-green">服务及隐私条款</text>
-					</u-checkbox>
-				</u-checkbox-group>
+				<u-input v-model="keyImportForm.passwordTwo" :clearable="false" placeholder='请输入重复密码' type='password' :border="border" />
 			</u-form-item>
 		</u-form>
 
-		<u-button @click="newAddressSubmit" type="success" :disabled="!newAddressForm.isAgree">提交</u-button>
+		<u-button @click="importKeySubmit" type="success">下一步</u-button>
 	</view>
 </template>
 <script>
 	import nerve from 'nerve-sdk-js';
 	import {
 		addressSetStorage
-	} from '../../utils/utils.js';
+	} from '@/utils/utils.js';
 	export default {
 		data() {
 			return {
 				border:true,
-				newAddressForm: {
+				keyImportForm: {
+					key: '9ce21dad67e0f0af2599b41b515a7f7018059418bab892a7b68f283d489abc4b',
 					password: 'nuls123456',
 					passwordTwo: 'nuls123456',
-					isAgree: true,
 				},
 				rules: {
+					key: [{
+						required: true,
+						message: '请输入私钥',
+						trigger: ['change', 'blur'],
+					}],
 					password: [{
 						required: true,
 						message: '请输入密码',
@@ -57,43 +56,45 @@
 		},
 		methods: {
 			
-			//创建地址
-			newAddressSubmit() {
-				this.$refs.newAddressRef.validate(async valid => {
+			//导入私钥
+			importKeySubmit() {
+				this.$refs.keyImportRef.validate(async valid => {
 					if (valid) {
-						const newAddress = nerve.newAddress(4, this.newAddressForm.password, 'TNVT');
+						
+						const newAddress = nerve.importByKey(4, this.keyImportForm.key,this.keyImportForm.password, 'TNVT');
 						//console.log(newAddress);
 
 						let addressList = await addressSetStorage(newAddress);
 						//console.log(addressList);
-
+						
 						if (addressList.success) {
 							uni.navigateTo({
-								url: '/pages/assets/back'
+								url: '/pages/assets/set'
 							})
 						}
-
+						
 					} else {
 						console.log('验证失败');
 					}
 				});
 			}
 		},
+		
 		// 必须要在onReady生命周期，因为onLoad生命周期组件可能尚未创建完毕
 		onReady() {
-			this.$refs.newAddressRef.setRules(this.rules);
+			this.$refs.keyImportRef.setRules(this.rules);
 		}
 	};
 </script>
 <style scoped lang="less">
-	.new-address {
+	.import-key {
 		width: 100%;
-		height: 23rem;
+		height: 25rem;
 		padding: 0;
 
 		.top {
 			margin: 0.1rem 0 0 0;
-			padding: 1rem 0.5rem 0.5rem;
+			padding: 1rem 1rem 0;
 
 			.titles {
 				font-size: 0.4rem;
@@ -107,8 +108,8 @@
 		}
 
 
-		.newAddress-form {
-			margin: 0.5rem 1rem 1rem;
+		.import-form {
+			margin: -0.8rem 1rem 1rem;
 
 			.uni-input-input {
 				//border-bottom: 1px solid #005CBF;

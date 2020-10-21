@@ -1,134 +1,86 @@
 <template>
 	<view class="container">
-		<view class="total">
+		<view class="total uni-bg2">
 			<view class="t-selsect">
-				<xfl-select :list="list" :clearable="false" :showItemNum="5" :listShow="false" :isCanInput="true" :style_Container="'height: 1.6rem; font-size: 0.8rem;'"
-				 :placeholder="'placeholder'" :initValue="'NULS'" :selectHideType="'hideAll'">
+				<xfl-select :list="addressList" :clearable="false" :showItemNum="10" :listShow="false" :isCanInput="true"
+				 :style_Container="'height: 2.2rem; font-size:12upx; color: #bbbdca; padding: 0 12% 0 1%;'" :placeholder="'placeholder'"
+				 :initValue="selectAddress" :selectHideType="'hideAll'" @change="changeAddress">
 				</xfl-select>
 			</view>
 			<view class="t-icon">
-				<!-- <text class="iconfont iconfuzhi icon"></text> -->
-				<text class="iconfont iconshezhi icon" @click="toUrl('set')"></text>
+				<text class="iconfont iconfuzhi icon uni-left" @click="copyAddress()"></text>
+				<u-icon class="uni-right" name="account" color="#707070" size="44" @click="toUrl('set')"></u-icon>
+				<!-- <text class="iconfont iconshezhi icon" @click="toUrl('set')"></text> -->
 			</view>
-
 		</view>
-		<view class="uni-gap"></view>
-		<view class="header uni-divider">
+
+		<view class="uni-clear"></view>
+		<view class="uni-bg2 header uni-divider">
 			<view class="l">
-				<text class="uni-h5">总资产：$ 123456.1654</text>
+				<view class="uni-h5 uni-text-gray ">总资产</view>
+				<view class="uni-h5 uni-bold">$123456.1654</view>
 			</view>
 			<view class="r">
 				<checkbox class="checkbox" value="true" checked="false" />
-				<text class="uni-h5">隐藏小额币种</text>
+				<text class="uni-h5 uni-text-gray">隐藏小额币种</text>
 			</view>
-
 		</view>
-		<view class="list">
-			<view class="item uni-divider">
-				<view class="title">
-					<view class="n uni-h4">USDT</view>
-					<view class="g uni-h5 uni-text-gray"><text class="uni-icon uni-icon-arrowright"></text></view>
-				</view>
-				<block>
-					<view class="thead">
-						<view class="l uni-text-gray">可用</view>
-						<view class="c uni-text-gray">冻结</view>
-						<view class="r uni-text-gray">折合(CNY)</view>
-					</view>
-					<view class="thead">
-						<view class="l">5211.52</view>
-						<view class="c">100.54</view>
-						<view class="r">5612165.55</view>
-					</view>
-				</block>
-			</view>
 
-			<view class="item uni-divider">
-				<view class="title">
-					<view class="n uni-h4">BTC</view>
-					<view class="g uni-h5 uni-text-gray"><text class="uni-icon uni-icon-arrowright"></text></view>
+		<view class="uni-clear uni-bg2 list">
+			<view class=" uni-clear list-li">
+				<view class="uni-left">
+					<image class="icon" src="../../static/icon/asset.png"></image>
+					<text class="uni-h4 symbol">NULS</text>
 				</view>
-				<block>
-					<view class="thead">
-						<view class="l uni-text-gray">可用</view>
-						<view class="c uni-text-gray">冻结</view>
-						<view class="r uni-text-gray">折合(CNY)</view>
-					</view>
-					<view class="thead">
-						<view class="l">5211.52</view>
-						<view class="c">100.54</view>
-						<view class="r">5612165.55</view>
-					</view>
-				</block>
-			</view>
-
-			<view class="item uni-divider">
-				<view class="title">
-					<view class="n uni-h4">ETH</view>
-					<view class="g uni-h5 uni-text-gray"><text class="uni-icon uni-icon-arrowright"></text></view>
+				<view class="uni-right">
+					<view class="uni-h4 info">102125.35</view>
+					<view class="uni-text-gray uni-h7 info">≈$2363.333</view>
 				</view>
-				<block>
-					<view class="thead">
-						<view class="l uni-text-gray">可用</view>
-						<view class="c uni-text-gray">冻结</view>
-						<view class="r uni-text-gray">折合(CNY)</view>
-					</view>
-					<view class="thead">
-						<view class="l">5211.52</view>
-						<view class="c">100.54</view>
-						<view class="r">5612165.55</view>
-					</view>
-				</block>
 			</view>
-
-			<view class="item">
-				<view class="title">
-					<view class="n uni-h4">EOS</view>
-					<view class="g uni-h5 uni-text-gray"><text class="uni-icon uni-icon-arrowright"></text></view>
+			<view class=" uni-clear list-li">
+				<view class="uni-left">
+					<image class="icon" src="../../static/icon/asset.png"></image>
+					<text class="uni-h4 symbol">NVT</text>
 				</view>
-				<block>
-					<view class="thead">
-						<view class="l uni-text-gray">可用</view>
-						<view class="c uni-text-gray">冻结</view>
-						<view class="r uni-text-gray">折合(CNY)</view>
-					</view>
-					<view class="thead">
-						<view class="l">5211.52</view>
-						<view class="c">100.54</view>
-						<view class="r">5612165.55</view>
-					</view>
-				</block>
+				<view class="uni-right">
+					<view class="uni-h4 info">102125.35</view>
+					<view class="uni-text-gray uni-h7 info">≈$2363.333</view>
+				</view>
 			</view>
-
+			<view class=" uni-clear list-li">
+				<view class="uni-left">
+					<image class="icon" src="../../static/icon/asset.png"></image>
+					<text class="uni-h4 symbol">BTC</text>
+				</view>
+				<view class="uni-right">
+					<view class="uni-h4 info">102125.35</view>
+					<view class="uni-text-gray uni-h7 info">≈$2363.333</view>
+				</view>
+			</view>
+			
 		</view>
+
+		<u-toast ref="uToast" />
 	</view>
 </template>
 <script>
-	import xflSelect from '../../components/xfl-select/xfl-select.vue';
+	import xflSelect from '@/components/xfl-select/xfl-select.vue';
+	import {
+		superLong,
+		copys
+	} from '@/utils/utils.js'
 	export default {
 		data() {
 			return {
-				list: [ //要展示的数据
-					'NULS',
-					{
-						value: 'BTC',
-						disabled: true
-					},
-					'NVT',
-					'ETH',
-					'USDT',
-				],
+				addressList: [], //账户列表
+				addressData: [], //账户完整信息列表
+				selectAddressInfo: {}, //选择账户信息
+				selectAddress: '', //选择账户地址
 			}
 		},
+
 		onReady() {
-			uni.setNavigationBarColor({
-				frontColor: '#ffffff',
-				backgroundColor: '#0952c3',
-				animation: {
-					duration: 400,
-					timingFunc: 'easeIn'
-				}
-			})
+			this.getAddressList();
 		},
 		mounted() {},
 		components: {
@@ -138,6 +90,75 @@
 
 		},
 		methods: {
+
+			//获取账户列表
+			getAddressList() {
+				try {
+					let res = uni.getStorageSync('addressData');
+					if (!res) {
+						///console.log("没有账户")
+						return;
+					}
+
+					let resData = JSON.parse(res);
+					//console.log(resData);
+					this.addressList = [];
+					if (resData) {
+						this.addressData = resData;
+
+						for (let item of this.addressData) {
+							//console.log(item);
+							if (item.isItem) {
+								this.selectAddressInfo = item;
+								this.selectAddress = superLong(item.address, 10);
+							}
+						}
+						console.log(this.selectAddress);
+						
+						resData.map((item) => {
+							this.addressList.push(superLong(item.address, 10))
+						})
+						//console.log(this.addressList);
+
+					}
+				} catch (e) {
+					console.log(e)
+				}
+			},
+
+			//下拉框选中
+			changeAddress(e) {
+				//console.log(e);
+				this.selectAddress = e.orignItem
+
+				let resData = JSON.parse(uni.getStorageSync('addressData'));
+				//console.log(resData);
+
+				for (let item of resData) {
+					//console.log(item);
+					item.alias = '';
+					item.isItem = false;
+					if (this.selectAddress === superLong(item.address, 10)) {
+						item.isItem = true;
+					}
+				}
+
+				//console.log(resData);
+				uni.setStorageSync('addressData', JSON.stringify(resData));
+			},
+
+			//复制地址
+			copyAddress() {
+				copys(this.selectAddressInfo.address);
+				this.$refs.uToast.show({
+					title: '已复制到剪切板',
+					type: 'success',
+					position: 'top',
+					duration:2000
+				})
+			},
+
+			//连接跳转
 			toUrl(name) {
 				console.log(name);
 				uni.navigateTo({
@@ -153,70 +174,110 @@
 
 	.container {
 		.total {
-			padding: 20upx 20upx 0 20upx;
-			height: 1.6rem;
+			padding: 1.5rem 0.5rem 0 1rem;
+			height: 3.5rem;
 
 			.t-selsect {
-				width: 70%;
+				width: 75%;
 				float: left;
+
+				.show-box {
+					background: #141627;
+					color: #FFF;
+					border: 1upx solid #363955;
+
+					.input {
+						.uni-input-wrapper {
+							.uni-input-input {
+								color: #bbbdca;
+								line-height: 2rem;
+								height: 2rem;
+							}
+						}
+					}
+
+					.list-container {}
+
+				}
+
 			}
 
 			.t-icon {
 				margin: 0 2% 0 0;
 				float: right;
+
+				.uni-left,
+				.uni-right {
+					display: block;
+				}
+
+				.uni-left {
+					margin: 0 1rem 0 0;
+				}
+
+				.uni-right {
+					margin: 0.4rem 0 0 0;
+				}
 			}
 		}
-	}
 
-	.header {
-		padding: 0 20upx 20upx 20upx;
-		height: 1rem;
+		.header {
+			margin: 0.2rem 0 0 0;
+			padding: 1rem 0.5rem 0;
+			height: 4rem;
 
-		.l {
-			float: left;
-		}
+			.l {
+				float: left;
+			}
 
-		.r {
-			float: right;
-			display: block;
+			.r {
+				float: right;
+				display: block;
+				margin: 1.5rem 0 0 0;
 
-			.checkbox {
-				zoom: 60%;
-				vertical-align: middle;
+				.checkbox {
+					zoom: 60%;
+					vertical-align: middle;
+					margin: -10px 0 0 0;
+				}
 			}
 		}
-	}
 
-	.container .list .item .title {
-		display: flex;
-		padding: 20upx 20upx;
-	}
+		.list {
+			min-height: 28.5rem;
+			padding: 0 0.5rem;
 
-	.container .list .item .title .n {
-		width: 50%;
-		color: #0952c3;
-	}
+			.list-li {
+				border-bottom: 0.05rem solid #363955;
+				height: 4rem;
 
-	.container .list .item .title .g {
-		width: 50%;
-		text-align: right;
-	}
+				.uni-left {
+					.icon {
+						width: 2rem;
+						height: 2rem;
+						margin: 1rem 0.3rem 0 0;
+						display: block;
+						float: left;
+					}
 
-	.container .list .item .thead {
-		display: flex;
-		padding: 0 20upx 10upx 20upx;
-	}
+					.symbol {
+						display: block;
+						float: left;
+						margin: 1.2rem 0 0 0;
+					}
 
-	.container .list .item .thead .l {
-		width: 35%;
-	}
+				}
 
-	.container .list .item .thead .c {
-		width: 35%;
-	}
+				.uni-right {
+					margin: 1rem 0 0 0;
 
-	.container .list .item .thead .r {
-		width: 30%;
-		text-align: right;
+					.info {
+						line-height: 1.4;
+					}
+				}
+			}
+
+		}
+
 	}
 </style>

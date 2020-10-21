@@ -91,21 +91,61 @@ export function divisionDecimals(nu, decimals = '') {
 }
 
 /**
+ * 复制 copy
+ * @param value
+ */
+export const copys = (value) => copy(value);
+
+/**
+ * 字符串中间显示....
+ * @param string
+ * @param leng
+ * @returns {*}
+ */
+export function superLong(string, leng) {
+	if (string && string.length > 10) {
+		return string.substr(0, leng) + "...." + string.substr(string.length - leng, string.length);
+	} else {
+		return string;
+	}
+}
+
+
+/**
  * 账户存入缓存
  */
 export function addressSetStorage(newAddressInfo) {
-	
+
 	let addressList = [];
 	try {
-		let resData = JSON.parse(uni.getStorageSync('addressData'));
+
+		let res = uni.getStorageSync('addressData');
+		//console.log(res);
+		let resData = []
+		if (res) {
+			resData = JSON.parse(res);
+		} else {
+			resData.push(newAddressInfo);
+		}
 		//console.log(resData);
 
 		if (resData.length !== 0) {
+			let isAddress = false;
 			for (let item of resData) {
 				item.isItem = false;
+				if (item.address === newAddressInfo.address) {
+					isAddress = true;
+					item.isItem = true;
+				}
 			}
-			newAddressInfo.isItem = true;
-			addressList = [...resData, newAddressInfo]
+
+			if (isAddress) {
+				newAddressInfo.isItem = true;
+				addressList = [...resData]
+			} else {
+				addressList = [...resData]
+			}
+
 		}
 	} catch (e) {
 		// error
