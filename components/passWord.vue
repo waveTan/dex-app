@@ -24,7 +24,7 @@
 	export default {
 		data() {
 			return {
-				passWordVisible: true,
+				passWordVisible: false,
 				passValue:'',
 			}
 		},

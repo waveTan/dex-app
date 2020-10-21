@@ -94,19 +94,22 @@
 		{
 			"path": "pages/assets/set",
 			"style": {
-				"navigationBarTitleText": "账户设置"
+				"navigationBarTitleText": "账户管理",
+				"navigationBarTextStyle":"#ffffff"
 			}
 		},
 		{
 			"path": "pages/assets/newAddress",
 			"style": {
-				"navigationBarTitleText": "创建账户"
+				"navigationBarTitleText": "创建账户",
+				"navigationBarTextStyle":"#ffffff"
 			}
 		},
 		{
 			"path": "pages/assets/back",
 			"style": {
-				"navigationBarTitleText": "备份账户"
+				"navigationBarTitleText": "备份账户",
+				"navigationBarTextStyle":"#ffffff"
 			}
 		},
 		{

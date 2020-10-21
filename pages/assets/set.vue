@@ -1,29 +1,35 @@
 <template>
 	<view class="set">
-		<view class="top" v-if="addressList.length !==0">
+		<view class="uni-bg2 top" v-if="addressList.length !==0">
 			<view class="t-selsect">
-				<xfl-select :list="addressList" :clearable="false" :showItemNum="5" :listShow="false" :isCanInput="true"
-				 :style_Container="'height: 1.6rem; font-size: 0.8rem;'" :initValue="selectAddress" :selectHideType="'hideAll'"
-				 @change="changeAddress">
+				<xfl-select :list="addressList" :clearable="false" :showItemNum="10" :listShow="false" :isCanInput="true"
+				 :style_Container="'height: 2.2rem; font-size:12upx;color: #bbbdca;padding: 0 12% 0 1%;'" :initValue="selectAddress"
+				 :selectHideType="'hideAll'" @change="changeAddress">
 				</xfl-select>
 			</view>
-			<view class="t-icon">
-				<text class="iconfont iconfuzhi icon"></text>
+		</view>
+
+		<view class="uni-bg2 list">
+
+			<view class="li" @click="showVisible('0')" v-if="addressList.length !==0">
+				<text>备份</text>
+				<u-icon name="arrow-right" size="28"></u-icon>
+			</view>
+			<view class="li" @click="showVisible('1')">
+				<text>导入</text>
+				<u-icon name="arrow-right" size="28"></u-icon>
+			</view>
+			<view class="li" @click="showVisible('2')">
+				<text>创建账户</text>
+				<u-icon name="arrow-right" size="28"></u-icon>
 			</view>
 		</view>
 
-		<view class="list">
-			<uni-list>
-				<uni-list-item title="备份" link @click="showVisible('0')" v-if="addressList.length !==0"></uni-list-item>
-				<uni-list-item title="导入" link @click="showVisible('1')"></uni-list-item>
-				<uni-list-item title="创建账户" link @click="showVisible('2')"></uni-list-item>
-			</uni-list>
-		</view>
-
-		<view class="list" v-if="addressList.length !==0">
-			<uni-list>
-				<uni-list-item title="移除账户" link @click="showVisible('3')"></uni-list-item>
-			</uni-list>
+		<view class="uni-bg2 list">
+			<view class="li" @click="showVisible('3')">
+				<text class="uni-text-red">移除账户</text>
+				<u-icon name="arrow-right" size="28"></u-icon>
+			</view>
 		</view>
 
 	</view>
@@ -31,34 +37,12 @@
 <script>
 	import nerve from 'nerve-sdk-js';
 	import xflSelect from '../../components/xfl-select/xfl-select.vue';
-	import menuBar from '../../components/menuBar.vue';
-	import sPopup from '../../components/s-popup';
-
-	import newAddress from './newAddress.vue';
 
 	export default {
 		data() {
 			return {
 				addressList: [], //账户列表
 				selectAddress: '',
-				currentPage: 'assets', //导航选中
-				visible: false, //弹框
-				visibleValue: '', //弹框显示内容
-
-				newAddressForm: {
-					pass: 'nuls123456',
-					passTwo: 'nuls123456'
-				},
-				newAddressRules: {
-					pass: {
-						required: true,
-						rule: 'type:string|length:~,20'
-					},
-					passTwo: {
-						required: true,
-						rule: 'type:string|length:~,20'
-					},
-				}
 			}
 		},
 		onReady() {
@@ -66,10 +50,7 @@
 		},
 		mounted() {},
 		components: {
-			xflSelect,
-			menuBar,
-			sPopup,
-			newAddress
+			xflSelect
 		},
 		computed: {
 
@@ -79,14 +60,22 @@
 			//获取账户列表
 			getAddressList() {
 				try {
-					let resData = uni.getStorageSync('addressData');
+					let resData = JSON.parse(uni.getStorageSync('addressData'));
 					//console.log(resData);
 					this.addressList = [];
 					if (resData) {
-						JSON.parse(resData).map(item => {
+						resData.map(item => {
 							this.addressList.push(item.address)
 						})
-						this.selectAddress = this.addressList[0];
+
+						for (let item of resData) {
+							//console.log(item.isItem);
+							if (item.isItem) {
+								this.selectAddress = item.address
+							}
+						}
+
+						//this.selectAddress = this.addressList[0];
 					}
 				} catch (e) {
 					console.log(e)
@@ -97,11 +86,25 @@
 			changeAddress(e) {
 				//console.log(e);
 				this.selectAddress = e.orignItem
+
+				let resData = JSON.parse(uni.getStorageSync('addressData'));
+				//console.log(resData);
+
+				for (let item of resData) {
+					//console.log(item);
+					item.alias = '';
+					item.isItem = false;
+					if (this.selectAddress === item.address) {
+						item.isItem = true;
+					}
+				}
+
+				//console.log(resData);
+				uni.setStorageSync('addressData', JSON.stringify(resData));
 			},
 
-			//显示弹框
+			//导航跳转
 			showVisible(value) {
-				this.visibleValue = value;
 				if (value === '0') {
 					this.toUrl('/pages/assets/back');
 				} else if (value === '2') {
@@ -109,19 +112,6 @@
 				} else if (value === '3') {
 					console.log(this.selectAddress)
 				}
-				//this.visible = true;
-			},
-
-			//隐藏弹框
-			hideVisible(info) {
-				console.log(info);
-				if (info.success) {
-					this.addressList = [];
-					info.data.map(item => {
-						this.addressList.push(item.address)
-					})
-				}
-				this.visible = false;
 			},
 
 			/** 连接跳转
@@ -138,39 +128,57 @@
 	}
 </script>
 <style scoped lang="less">
-	@import '../../static/font/iconfont.css';
-
 	.set {
 		.top {
-			height: 1.8rem;
+			height: 3.5rem;
+			width: 100%;
 
 			.t-selsect {
-				width: 86%;
+				width: 95%;
 				float: left;
-				margin: 0.2rem 0 0 2%;
-			}
+				margin: 0.5rem 0 0 2.5%;
 
-			.t-icon {
-				margin: 0.1rem 2% 0 0;
-				float: right;
+				.show-box {
+					background: #141627;
+					color: #FFF;
+					border: 1upx solid #363955;
+
+					.input {
+						.uni-input-wrapper {
+							.uni-input-input {
+								color: #bbbdca;
+								line-height: 2rem;
+								height: 2rem;
+							}
+						}
+					}
+
+					.list-container {}
+
+				}
 			}
 		}
 
 		.list {
-			margin: 0.5rem 0 0 0;
-			border-top: 0.09rem solid #797979;
-			border-bottom: 0.09rem solid #797979;
-		}
+			margin: 0.3rem 0 0 0;
+			border-top: 0 solid #797979;
 
-		.set-visible {
-			.set-popup {
-				width: 90%;
-				height: 20rem;
-				margin: 0 auto;
+			.li {
+				color: #c1d0de;
+				font-weight: bold;
+				border-bottom: 2upx solid #363955;
+				margin: 0 0.5rem;
+				height: 3.2rem;
+				line-height: 3.2rem;
 
+				.u-icon--right {
+					display: block;
+					float: right;
+					margin: 1.1rem 0 0 0;
+				}
 			}
+
+
 		}
-
-
 	}
 </style>

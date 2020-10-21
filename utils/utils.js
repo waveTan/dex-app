@@ -94,12 +94,18 @@ export function divisionDecimals(nu, decimals = '') {
  * 账户存入缓存
  */
 export function addressSetStorage(newAddressInfo) {
+	
 	let addressList = [];
 	try {
-		let resData = uni.getStorageSync('addressData');
+		let resData = JSON.parse(uni.getStorageSync('addressData'));
 		//console.log(resData);
-		if (resData) {
-			addressList = [...JSON.parse(resData), newAddressInfo]
+
+		if (resData.length !== 0) {
+			for (let item of resData) {
+				item.isItem = false;
+			}
+			newAddressInfo.isItem = true;
+			addressList = [...resData, newAddressInfo]
 		}
 	} catch (e) {
 		// error
