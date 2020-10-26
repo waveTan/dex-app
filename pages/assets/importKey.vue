@@ -25,12 +25,13 @@
 	import {
 		addressSetStorage
 	} from '@/utils/utils.js';
+	import{CHAIN_INFO} from '@/config.js'
 	export default {
 		data() {
 			return {
 				border:true,
 				keyImportForm: {
-					key: '9ce21dad67e0f0af2599b41b515a7f7018059418bab892a7b68f283d489abc4b',
+					key: '77b6e2d46cd08aaff18098e7b556323a4b36aff80f49acc01d1f3d9670889df8',
 					password: 'nuls123456',
 					passwordTwo: 'nuls123456',
 				},
@@ -61,7 +62,7 @@
 				this.$refs.keyImportRef.validate(async valid => {
 					if (valid) {
 						
-						const newAddress = nerve.importByKey(4, this.keyImportForm.key,this.keyImportForm.password, 'TNVT');
+						const newAddress = nerve.importByKey(CHAIN_INFO.chainId, this.keyImportForm.key,this.keyImportForm.password, CHAIN_INFO.prefix);
 						//console.log(newAddress);
 
 						let addressList = await addressSetStorage(newAddress);

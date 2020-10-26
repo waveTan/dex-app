@@ -1,12 +1,46 @@
-import request from './request'
+import Request from 'luch-request' // 使用npm
+import {
+	DEX_URL
+} from '@/config.js'
 
-const baseURL = ``
-// const baseURL = 'http://192.168.29.238:7001'
-request.config.baseURL = baseURL
+const http = new Request();
 
-const api = {
-  getHomeData: (id) => request.get(`/v1/`)
-  
+/**  封装get请求
+ * Encapsulation get method
+ * @param url
+ * @returns {Promise}
+ */
+export async function dexGet(url) {
+	axios.defaults.baseURL = DEX_URL;
+	let newUrl = DEX_URL + url
+	try {
+		let res = await http.get(newUrl);
+		console.log(res)
+		return (res.data.data)
+	} catch (err) {
+		return {
+			success: false,
+			data: err
+		}
+	}
 }
 
-export default api
+/**封装post请求
+ * Encapsulation post method
+ * @param url
+ * @param data
+ * @returns {Promise}
+ */
+export async function dexPost(url, data) {
+	let newUrl = DEX_URL + url
+	try {
+		let res = await http.post(newUrl, data);
+		//console.log(res);
+		return (res.data.data)
+	} catch (err) {
+		return {
+			success: false,
+			data: err
+		}
+	}
+}

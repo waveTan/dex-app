@@ -30,11 +30,14 @@
 	import nerve from 'nerve-sdk-js';
 	import {
 		addressSetStorage
-	} from '../../utils/utils.js';
+	} from '@/utils/utils.js';
+	import {
+		CHAIN_INFO
+	} from '@/config.js'
 	export default {
 		data() {
 			return {
-				border:true,
+				border: true,
 				newAddressForm: {
 					password: 'nuls123456',
 					passwordTwo: 'nuls123456',
@@ -56,12 +59,12 @@
 			};
 		},
 		methods: {
-			
+
 			//创建地址
 			newAddressSubmit() {
 				this.$refs.newAddressRef.validate(async valid => {
 					if (valid) {
-						const newAddress = nerve.newAddress(4, this.newAddressForm.password, 'TNVT');
+						const newAddress = nerve.newAddress(CHAIN_INFO.chainId, this.newAddressForm.password, CHAIN_INFO.prefix);
 						//console.log(newAddress);
 
 						let addressList = await addressSetStorage(newAddress);

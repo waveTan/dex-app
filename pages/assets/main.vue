@@ -2,10 +2,17 @@
 	<view class="container">
 		<view class="total uni-bg2">
 			<view class="t-selsect">
-				<xfl-select :list="addressList" :clearable="false" :showItemNum="10" :listShow="false" :isCanInput="true"
+				<!-- <xfl-select :list="addressList" :clearable="false" :showItemNum="10" :listShow="false" :isCanInput="true"
 				 :style_Container="'height: 2.2rem; font-size:12upx; color: #bbbdca; padding: 0 12% 0 1%;'" :placeholder="'placeholder'"
 				 :initValue="selectAddress" :selectHideType="'hideAll'" @change="changeAddress">
-				</xfl-select>
+				</xfl-select> -->
+				<view class="address-select" @click="showAddressSelect">
+					<text class="uni-text-gray">{{selectAddress}}</text>
+					<u-icon name="arrow-down-fill" color="#363955" size="28"></u-icon>
+					<u-select v-model="addressSelectModel" mode="single-column" :list="addressList" @confirm="changeAddress"></u-select>
+				</view>
+
+
 			</view>
 			<view class="t-icon">
 				<text class="iconfont iconfuzhi icon uni-left" @click="copyAddress()"></text>
@@ -18,7 +25,7 @@
 		<view class="uni-bg2 header uni-divider">
 			<view class="l">
 				<view class="uni-h5 uni-text-gray ">总资产</view>
-				<view class="uni-h5 uni-bold">$123456.1654</view>
+				<view class="uni-h5 uni-bold">${{totalUsbValue}}</view>
 			</view>
 			<view class="r">
 				<checkbox class="checkbox" value="true" checked="false" />
@@ -27,37 +34,22 @@
 		</view>
 
 		<view class="uni-clear uni-bg2 list">
-			<view class=" uni-clear list-li">
+			<view class="uni-center" style="line-height: 5rem;" v-if="assersData.length ===0">
+				<u-loading color="#4cd964"></u-loading>
+			</view>
+
+			<view class=" uni-clear list-li" v-else v-for="(item,index) in assersData" :key="index">
 				<view class="uni-left">
 					<image class="icon" src="../../static/icon/asset.png"></image>
-					<text class="uni-h4 symbol">NULS</text>
+					<text class="uni-h4 symbol">{{item.symbol}}</text>
 				</view>
 				<view class="uni-right">
-					<view class="uni-h4 info">102125.35</view>
-					<view class="uni-text-gray uni-h7 info">≈$2363.333</view>
+					<view class="uni-h4 info">{{item.total}}</view>
+					<view class="uni-text-gray uni-h7 info">≈${{item.usable}}</view>
 				</view>
 			</view>
-			<view class=" uni-clear list-li">
-				<view class="uni-left">
-					<image class="icon" src="../../static/icon/asset.png"></image>
-					<text class="uni-h4 symbol">NVT</text>
-				</view>
-				<view class="uni-right">
-					<view class="uni-h4 info">102125.35</view>
-					<view class="uni-text-gray uni-h7 info">≈$2363.333</view>
-				</view>
-			</view>
-			<view class=" uni-clear list-li">
-				<view class="uni-left">
-					<image class="icon" src="../../static/icon/asset.png"></image>
-					<text class="uni-h4 symbol">BTC</text>
-				</view>
-				<view class="uni-right">
-					<view class="uni-h4 info">102125.35</view>
-					<view class="uni-text-gray uni-h7 info">≈$2363.333</view>
-				</view>
-			</view>
-			
+
+
 		</view>
 
 		<u-toast ref="uToast" />
@@ -66,16 +58,27 @@
 <script>
 	import xflSelect from '@/components/xfl-select/xfl-select.vue';
 	import {
+		dexPost
+	} from '@/utils/api.js'
+	import {
 		superLong,
-		copys
+		copys,
+		Plus,
+		divisionDecimals
 	} from '@/utils/utils.js'
 	export default {
 		data() {
 			return {
 				addressList: [], //账户列表
 				addressData: [], //账户完整信息列表
+
+				addressSelectModel: false,
+
 				selectAddressInfo: {}, //选择账户信息
 				selectAddress: '', //选择账户地址
+
+				assersData: [], //资产列表
+				totalUsbValue: 0, //总估值
 			}
 		},
 
@@ -111,12 +114,18 @@
 							if (item.isItem) {
 								this.selectAddressInfo = item;
 								this.selectAddress = superLong(item.address, 10);
+								this.addressInfoByAddress(item.address)
 							}
 						}
-						console.log(this.selectAddress);
-						
+						//console.log(this.selectAddress);
+
 						resData.map((item) => {
-							this.addressList.push(superLong(item.address, 10))
+							let newAddressInfo = {
+								label: superLong(item.address, 10),
+								value: item.address
+							}
+
+							this.addressList.push(newAddressInfo)
 						})
 						//console.log(this.addressList);
 
@@ -126,10 +135,20 @@
 				}
 			},
 
+			//
+			showAddressSelect() {
+				this.addressSelectModel = true;
+			},
+
 			//下拉框选中
 			changeAddress(e) {
 				//console.log(e);
-				this.selectAddress = e.orignItem
+				if(this.selectAddress === e[0].label){
+					return;
+				}
+				this.selectAddress = e[0].label;
+				this.totalUsbValue = 0;
+				this.assersData = [];
 
 				let resData = JSON.parse(uni.getStorageSync('addressData'));
 				//console.log(resData);
@@ -140,6 +159,7 @@
 					item.isItem = false;
 					if (this.selectAddress === superLong(item.address, 10)) {
 						item.isItem = true;
+						this.addressInfoByAddress(item.address)
 					}
 				}
 
@@ -154,9 +174,38 @@
 					title: '已复制到剪切板',
 					type: 'success',
 					position: 'top',
-					duration:2000
+					duration: 2000
 				})
 			},
+
+			//获取资产列表
+			async addressInfoByAddress(address) {
+				console.log(address);
+				let url = "/account/assets";
+				let data = {
+					"address": address
+				};
+				let resData = await dexPost(url, data);
+				//console.log(resData);
+				if (!resData.success) {
+					//this.assetsLoading = false;
+					return;
+				}
+				for (let item of resData.result) {
+					item.currency = item.symbol;
+					item.total = divisionDecimals(item.total, item.decimal);
+					item.usable = divisionDecimals(item.available, item.decimal);
+					item.frozen = divisionDecimals(item.freeze, item.decimal);
+					item.orderFreeze = item.orderAmount ? divisionDecimals(item.orderAmount, item.decimal) : 0;
+					item.btcValue = Number(divisionDecimals(item.btcValue, item.decimal));
+					this.totalUsbValue = Number(Plus(this.totalUsbValue, item.usable))
+				}
+				this.assersData = resData.result.filter(item => Number(item.total) > 0.0001);
+				//console.log(this.assersData);
+
+				//this.assetsLoading = false; 
+			},
+
 
 			//连接跳转
 			toUrl(name) {
@@ -180,6 +229,20 @@
 			.t-selsect {
 				width: 75%;
 				float: left;
+
+				.address-select {
+					height: 2rem;
+					width: 100%;
+					line-height: 2rem;
+					padding: 0 0.2rem;
+					border: 1upx solid #363955;
+
+					.u-icon--right {
+						display: block;
+						float: right;
+						margin: 0.55rem 0.3rem 0 0;
+					}
+				}
 
 				.show-box {
 					background: #141627;

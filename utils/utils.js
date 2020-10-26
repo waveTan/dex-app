@@ -123,15 +123,23 @@ export function addressSetStorage(newAddressInfo) {
 		//console.log(res);
 		let resData = []
 		if (res) {
-			resData = JSON.parse(res);
+			resData = [...JSON.parse(res), newAddressInfo];
 		} else {
 			resData.push(newAddressInfo);
 		}
 		//console.log(resData);
 
-		if (resData.length !== 0) {
+		//账户列表去重
+		let obj = {};
+		let newAddressList = resData.reduce((item, next) => {
+			obj[next.address] ? '' : obj[next.address] = true && item.push(next);
+			return item
+		}, []);
+		//console.log(newAddressList);
+
+		if (newAddressList.length !== 0) {
 			let isAddress = false;
-			for (let item of resData) {
+			for (let item of newAddressList) {
 				item.isItem = false;
 				if (item.address === newAddressInfo.address) {
 					isAddress = true;
@@ -141,9 +149,9 @@ export function addressSetStorage(newAddressInfo) {
 
 			if (isAddress) {
 				newAddressInfo.isItem = true;
-				addressList = [...resData]
+				addressList = [...newAddressList]
 			} else {
-				addressList = [...resData]
+				addressList = [...newAddressList]
 			}
 
 		}
@@ -157,6 +165,7 @@ export function addressSetStorage(newAddressInfo) {
 	//console.log(addressList)
 
 	try {
+
 		uni.setStorageSync('addressData', JSON.stringify(addressList));
 		return {
 			success: true,

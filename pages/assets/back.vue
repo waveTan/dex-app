@@ -87,7 +87,7 @@
 			//完成备份
 			complete(){
 				uni.navigateTo({
-					url: '/pages/assets/set'
+					url: '/pages/assets/main'
 				})
 			}
 
