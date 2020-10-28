@@ -1,1 +1,0 @@
-<view class="container"><uni-segmented-control vue-id="41dfcede-1" current="{{current}}" values="{{items}}" styleType="{{styleType}}" activeColor="{{activeColor}}" data-event-opts="{{[['^clickItem',[['onClickItem']]]]}}" bind:clickItem="__e" bind:__l="__l"></uni-segmented-control><market-list vue-id="41dfcede-2" list="{{marketList}}" bind:__l="__l"></market-list></view>

@@ -110,9 +110,40 @@ export function superLong(string, leng) {
 	}
 }
 
-
 /**
- * 账户存入缓存
+ * 保留指定小数位数
+ * @param val 要处理的数据，Number | String
+ * @param len 保留小数位数，位数不足时，以0填充
+ * @param side 1|-1 对应 入|舍
+ * @returns {string|number}
+ */
+export function tofix(val, len, side) {
+  const numval = Number(val);
+  if (isNaN(numval)) return 0;
+  const str = val.toString();
+  if (str.indexOf('.') > -1) {
+    let numArr = str.split('.');
+    if (numArr[1].length > len) {
+      let tempnum = numval * Math.pow(10, len);
+      if (!side) {
+        return Number(val).toFixed(len)
+      } else if (side === 1) {
+        if (tempnum < 1) return (1 / Math.pow(10, len));
+        return (Math.ceil(tempnum) / Math.pow(10, len)).toFixed(len)
+      } else if (side === -1) {
+        return (Math.floor(tempnum) / Math.pow(10, len)).toFixed(len)
+      } else {
+        return Number(val.toFixed(len))
+      }
+    } else {
+      return Number(str).toFixed(len)
+    }
+  } else {
+    return Number(val).toFixed(len)
+  }
+}
+
+/** 账户存入缓存
  */
 export function addressSetStorage(newAddressInfo) {
 

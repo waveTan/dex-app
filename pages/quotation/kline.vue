@@ -52,10 +52,10 @@
 
 		<view class="uni-bg bottom-btn">
 			<view class="uni-left">
-				<u-button type="success">买入</u-button>
+				<u-button type="success" @click="toUrl">买入</u-button>
 			</view>
 			<view class="uni-right">
-				<u-button type="error">卖出</u-button>
+				<u-button type="error" @click="toUrl">卖出</u-button>
 			</view>
 		</view>
 
@@ -67,12 +67,15 @@
 			return {
 				background: {
 					backgroundColor: '#141627',
-
 				}
 			}
 		},
 		methods: {
-
+			toUrl() {
+				uni.reLaunch({
+					url: "/pages/trade/main"
+				})
+			}
 		}
 	}
 </script>
@@ -136,11 +139,14 @@
 		}
 
 		.bottom-btn {
-			height: 5rem;
+			height: 4rem;
+			width: 100%;
 			text-align: center;
+			position: fixed;
+			bottom: 0;
 
 			.uni-left {
-				margin: 1rem 0 0 2rem;
+				margin: 1rem 0 0 1.5rem;
 			}
 
 			.uni-right {

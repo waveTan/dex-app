@@ -11,11 +11,9 @@ const http = new Request();
  * @returns {Promise}
  */
 export async function dexGet(url) {
-	axios.defaults.baseURL = DEX_URL;
 	let newUrl = DEX_URL + url
 	try {
 		let res = await http.get(newUrl);
-		console.log(res)
 		return (res.data.data)
 	} catch (err) {
 		return {

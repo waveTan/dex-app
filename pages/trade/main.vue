@@ -2,84 +2,70 @@
 	<view class="uni-bg container">
 		<view class="uni-bg2 top">
 			<view class="uni-left">
-				<!-- <text class="iconfont iconbiaoqiankuozhan_jiaoyi-179 icon"></text> -->
-				<text class="name">NVT/NULS</text>
-				<text class="amount green">+5.26%</text>
+				<text class="name">{{tradingInfo.tradingName}}</text>
+				<text class="amount green" v-if="tradingInfo.upsDowns > 0">{{tradingInfo.upsDowns}}</text>
+				<text class="amount" v-else-if="tradingInfo.upsDowns === 0">{{tradingInfo.upsDowns}}</text>
+				<text class="amount red" v-else-if="tradingInfo.upsDowns < 0">{{tradingInfo.upsDowns}}</text>
 			</view>
 
 			<view class="uni-right">
-				<!-- <text class="iconfont iconKxiantu icon"></text> -->
 				<u-icon name="star"></u-icon>
 			</view>
 
 		</view>
 		<view class="uni-bg2 content">
 			<view class="position">
-				<positionList v-on:depthChange="depthChange"></positionList>
+				<positionList :tradingInfo="tradingInfo"></positionList>
 			</view>
 			<view class="trade">
-				<tradePanel ref="trade" :type="type"></tradePanel>
+				<tradePanel ref="trade" :tradingInfo="tradingInfo"></tradePanel>
 			</view>
 		</view>
 		<view class="uni-gap"></view>
-		<entrustOrderList></entrustOrderList>
-		<uni-drawer :visible="drawerVisible" mask="false" mode="left" @close="closeDrawer">
+		<!-- <entrustOrderList></entrustOrderList> -->
+		<!-- <uni-drawer :visible="drawerVisible" mask="false" mode="left" @close="closeDrawer">
 			<marketDrawer :areaList="areaList" :marketList="marketList"></marketDrawer>
-		</uni-drawer>
+		</uni-drawer> -->
 	</view>
 </template>
 
 <script>
 	import {
-		mapState,
-		mapActions
-	} from 'vuex'
-	import {
 		uniDrawer
 	} from '@dcloudio/uni-ui'
-	import positionList from '../../components/positionList.vue'
-	import entrustOrderList from '../../components/entrustOrderList.vue'
-	import tradePanel from '../../components/tradePanel.vue'
-	import marketDrawer from '../../components/marketDrawer.vue'
+	import positionList from './positionList.vue'
+	import entrustOrderList from './entrustOrderList.vue'
+	import tradePanel from './tradePanel.vue'
+	import marketDrawer from './marketDrawer.vue'
+	import {
+		WEBSOCKET_URL
+	} from '@/config.js'
+	import {
+		dexGet,
+		dexPost
+	} from '@/utils/api.js'
+	import {
+		Plus,
+		divisionDecimals,
+		Minus,
+		Times,
+		timesDecimals,
+		Division,
+		tofix
+	} from '@/utils/utils.js'
 	export default {
 		onReady() {
-			uni.setNavigationBarTitle({
-				title: "BTCUSDT"
-			})
+			this.tradingInfo = JSON.parse(uni.getStorageSync('tradingInfo'));
+
+			this.getTradingInfo(this.tradingInfo.hash, 0, {});
+			//this.getOrderList(this.tradingInfo.hash, this.depthValue, 0, {});
 		},
 
 		onShow() {
-			let _this = this;
-			uni.getStorage({
-				key: 'market',
-				success: function(res) {
-					this.market = res.data;
-					this.type = res.data.type;
-					setTimeout(() => {
-						_this.$refs.trade.onChangeType(res.data.type)
-					}, 10)
-					uni.setNavigationBarTitle({
-						title: this.market.symbol
-					})
-					uni.removeStorage({
-						key: 'market',
-						success: function(res) {}
-					});
-				}
-			});
+
 		},
 		onHide() {
-			this.$refs.trade.onChangeType(1)
-		},
-		onNavigationBarButtonTap(e) {
 
-			if (e.index == 0) {
-				this.drawerVisible = true;
-			} else {
-				uni.navigateTo({
-					url: "/pages/trade/kline/main?symbol=" + this.symbol
-				})
-			}
 		},
 		components: {
 			uniDrawer,
@@ -90,85 +76,230 @@
 		},
 		data() {
 			return {
-				symbol: 'BTCUSDT',
-				market: {},
-				drawerVisible: false,
-				scrollLeft: 0,
-				areaList: [],
-				marketList: [],
-				depthValue: 1,
-				type: 1
+				tradingInfo: {}, //交易对信息
+				buyData: [], //买订单
+				sellData: [], //卖订单
+				entrustData: [], //当前委托订单
 			}
 		},
 		mounted() {
-			this.areaList = [{
-				id: 1,
-				name: "USDT"
-			}, {
-				id: 2,
-				name: "BTC"
-			}, {
-				id: 3,
-				name: "ETH"
-			}, {
-				id: 4,
-				name: "EOS"
-			}];
-			this.marketList = [{
-					"symbol": "BTCUSDT",
-					"name": "BTC",
-					"price": 518072342.8400,
-					"priceUnit": "USDT",
-					"cnyPrice": 360064.91,
-					"coinCnyPrice": 6.95,
-					"high": 35.51000000,
-					"low": 35.51000000,
-					"volume": 132412,
-					"amount": 7223022.64800000,
-					"change": 51.93
-				},
-				{
-					"symbol": "ETHUSDT",
-					"name": "ETH",
-					"price": 807.2500,
-					"priceUnit": "USDT",
-					"cnyPrice": 1064.91,
-					"coinCnyPrice": 6.95,
-					"high": 35.51000000,
-					"low": 35.51000000,
-					"volume": 863446,
-					"amount": 692302221.12300000,
-					"change": -25.43
-				},
-				{
-					"symbol": "EOSUSDT",
-					"name": "EOS",
-					"price": 63.9000,
-					"priceUnit": "USDT",
-					"cnyPrice": 988114.91,
-					"coinCnyPrice": 6.95,
-					"high": 35.51000000,
-					"low": 35.51000000,
-					"volume": 743356,
-					"amount": 834513535.87600000,
-					"change": 46.75
-				}
-			];
+			this.areaList = [];
+			this.marketList = [];
 		},
 		computed: {},
 		methods: {
-			closeDrawer() {
-				this.drawerVisible = false;
+
+			/** @disc: 获取交易对详情
+			 * @params: tradingHash
+			 * @params: type 0:进入界面查询数据 1：websocket查询后的数据
+			 * @params: res
+			 * @date: 2019-12-16 10:41
+			 * @author: Wave
+			 */
+			async getTradingInfo(tradingHash, type = 0, res = {}) {
+				let tradingInfoRes = res;
+				if (type === 0) {
+					let url = '/coin/trading/get/' + tradingHash;
+					//console.log(url);
+					try {
+						tradingInfoRes = await dexGet(url);
+						//console.log(tradingInfoRes);
+						if (!tradingInfoRes.success) {
+							console.log('获取交易对错误,请检查网络刷新重试，错误信息:' + JSON.stringify(tradingInfoRes));
+							return;
+						}
+					} catch (e) {
+						console.log('获取交易对异常,请检查网络刷新重试，异常信息:' + JSON.stringify(e));
+						return;
+					}
+				}
+
+				if (tradingInfoRes.result.newPrice === 0 || tradingInfoRes.result.beginPrice24 === 0) {
+					tradingInfoRes.result.upsDowns = 0
+				} else {
+					let newMinus = Number(Minus(tradingInfoRes.result.newPrice, tradingInfoRes.result.beginPrice24));
+					tradingInfoRes.result.upsDowns = newMinus === 0 ? 0 : parseFloat(Number(Times(Number(Division(newMinus,
+						tradingInfoRes.result.beginPrice24)), 100)).toFixed(2));
+				}
+
+				this.tradingInfo = tradingInfoRes.result;
+				//console.log(this.tradingInfo);
+
+				/* if (this.accountInfo.address && type === 0) {
+					let quoteAssetByAddress = await getBaseAssetInfo(this.tradingInfo.quoteAssetChainId, this.tradingInfo.quoteAssetId,
+						this.accountInfo.address);
+					//console.log(quoteAssetByAddress);
+					if (!quoteAssetByAddress.success) {
+						console.log('获取买资产信息错误:' + JSON.stringify(quoteAssetByAddress.data));
+						return;
+					}
+					quoteAssetByAddress.data.balances = Number(divisionDecimals(quoteAssetByAddress.data.available, this.tradingInfo.quoteDecimal));
+					this.quoteAssetInfo = quoteAssetByAddress.data;
+					//console.log(this.quoteAssetInfo);
+
+					let baseAssetByAddress = await getBaseAssetInfo(this.tradingInfo.baseAssetChainId, this.tradingInfo.baseAssetId,
+						this.accountInfo.address);
+					//console.log(baseAssetByAddress);
+					if (!baseAssetByAddress.success) {
+						console.log('获取卖资产信息错误:' + JSON.stringify(quoteAssetByAddress.data));
+						return;
+					}
+					baseAssetByAddress.data.balances = Number(divisionDecimals(baseAssetByAddress.data.available, this.tradingInfo.baseDecimal));
+					this.baseAssetInfo = baseAssetByAddress.data;
+					//console.log(this.baseAssetInfo);
+				} */
+
 			},
-			depthChange(e) {
-				console.log("===============" + e + "==================")
-			}
+
+			/**@disc:交易对详情websocket推送信息
+			 * @date: 2020-05-11 16:14
+			 * @author: Wave
+			 */
+			wsTrading() {
+				unListener(WEBSOCKET_URL(), "trading");
+				listener(WEBSOCKET_URL(), "trading", JSON.stringify({
+						"tradingHash": this.tradingInfo.hash
+					}),
+					data => {
+						//console.log(JSON.parse(data));
+						if (this.tradingInfo.id !== JSON.parse(data).id) {
+							return;
+						}
+						this.getTradingInfo(this.tradingInfo.hash, 1, {
+							result: JSON.parse(data)
+						});
+					});
+			},
+
+			/** @disc: 交易对类型选择
+			 * @params: type 0:自选1:nuls 2:usdi
+			 * @date: 2019-12-13 14:31
+			 * @author: Wave
+			 */
+			orderValue(type) {
+				this.coinOrderValue = type;
+				if (this.accountInfo.address) {
+					this.getEntrustList(this.accountInfo.address, 1, 100);
+				}
+				this.getOrderList(this.tradingInfo.hash, this.depthValue, 0, {});
+				setTimeout(() => {
+					this.wsOrder();
+				}, 100);
+
+			},
+
+
+			/** @disc: 获取用户当前委托列表
+			 * @params: address
+			 * @params: pageIndex
+			 * @params: pageSize
+			 * @date: 2019-12-13 15:44
+			 * @author: Wave
+			 */
+			async getEntrustList(address, pageIndex, pageSize) {
+				let url = '/order/list/address';
+				let data = {
+					"address": address,
+					"pageNumber": pageIndex,
+					"pageSize": pageSize
+				};
+				let entrustListRes = await this.$dexPost(url, data);
+				//console.log(entrustListRes);
+				if (!entrustListRes.success) {
+					this.getEntrustList(address, pageIndex, pageSize);
+					return;
+				}
+				this.pageTotal = entrustListRes.result.total;
+				for (let item of entrustListRes.result.list) {
+					item.tradingName = item.baseSymbol + '/' + item.quoteSymbol;
+					item.prices = parseFloat(Number(divisionDecimals(item.price, item.quoteDecimal)));
+				}
+				this.entrustData = entrustListRes.result.list.filter(k => k.tradingName === this.tradingInfo.tradingName);
+				//console.log(this.entrustData);
+			},
+
+			/** @disc: 选择深度
+			 * @params: value
+			 * @date: 2020-01-03 17:01
+			 * @author: Wave
+			 */
+			changeDepth(value) {
+				this.depthValue = value;
+				this.getOrderList(this.$store.getters.getDealData.hash, this.depthValue);
+				this.wsOrder();
+			},
+
+			/** @disc: 撤销委托
+			 * @params:  tradingInfo
+			 * @date: 2020-01-06 15:30
+			 * @author: Wave
+			 */
+			revoke(tradingInfo) {
+				//console.log(tradingInfo);
+				this.revokeInfo = tradingInfo;
+				this.passwordType = 1;
+				this.$refs.password.showPassword(true);
+			},
+
+			/** 撤销委托交易组装
+			 * @param tradingOrderInfo
+			 * @param addressInfo
+			 * @param defaultAsset
+			 */
+			async tradingOrderCancel(tradingOrderInfo, addressInfo, defaultAsset) {
+				let balanceInfo = await getBalanceOrNonceByAddress(tradingOrderInfo.address, defaultAsset.assetsChainId,
+					defaultAsset.assetsId);
+				//console.log(balanceInfo);
+
+				if (!balanceInfo.success) {
+					console.log("获取nonce错误");
+					this.revokeList.hash = '';
+					return;
+				}
+				if (balanceInfo.data.balance < addressInfo.fee) {
+					this.$message({
+						message: this.$t('tips.tips19') + JSON.stringify(balanceInfo.data),
+						type: 'error',
+						duration: 3000
+					});
+					this.revokeList.hash = '';
+					return;
+				}
+
+				let inOrOutputs = await revokeCoinData(tradingOrderInfo, addressInfo, defaultAsset);
+				console.log(inOrOutputs);
+				//交易组装
+				let tAssemble = await nerve.transactionAssemble(inOrOutputs.data.inputs, inOrOutputs.data.outputs, addressInfo.remark,
+					addressInfo.type, tradingOrderInfo);
+				//console.log(tAssemble);
+				//获取hash
+				let hash = await tAssemble.getHash();
+				//console.log(hash);
+				//交易签名
+				let txSignature = await sdk.getSignData(hash.toString('hex'), addressInfo.pri);
+				//console.log(txSignature);
+				//通过拼接签名、公钥获取HEX
+				let signData = await sdk.appSplicingPub(txSignature.signValue, addressInfo.pub);
+				tAssemble.signatures = signData;
+				let txhex = tAssemble.txSerialize().toString("hex");
+				//console.log(txhex.toString('hex'));
+				return {
+					success: true,
+					data: txhex.toString('hex')
+				}
+			},
+
+
+			closeDrawer() {
+
+			},
+			depthChange(e) {}
 		}
 	}
 </script>
 
 <style lang="less">
-	@import '../../static/font/iconfont.css';
+	@import '@/static/font/iconfont.css';
 
 	.container {
 		.top {
