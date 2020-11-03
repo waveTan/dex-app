@@ -1,0 +1,195 @@
+<html>
+	<head>
+		<title>USDT</title>
+		<meta name="renderer" content="webkit" />
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<script type="text/javascript" src="https://unpkg.com/klinecharts/dist/klinecharts.production.min.js"></script>
+
+		<style type="text/css">
+			#container_id {
+				width: 100%;
+				height: 20rem;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="container_id"></div>
+
+		<script type="text/javascript">
+			import {dexPost} from '@/utils/api.js'
+			var timeList: [{
+					value: 1,
+					label: '1min'
+				},
+				{
+					value: 5,
+					label: '5min'
+				},
+				{
+					value: 10,
+					label: '10min'
+				},
+				{
+					value: 30,
+					label: '30min'
+				},
+				{
+					value: 60,
+					label: '1hour'
+				},
+				{
+					value: 360,
+					label: '6hour'
+				},
+				{
+					value: 720,
+					label: '12hour'
+				},
+				{
+					value: 1440,
+					label: '1day'
+				},
+				{
+					value: 10080,
+					label: '1week'
+				},
+			]; //时间列表
+			var timeValue: 30; //时间选择
+
+			var chart = klinecharts.init(document.getElementById('container_id'));
+			getTradingGet('68b627d91ba4412a1bf56c3c5311b67a34c093fc5551dc8b836e2644cad76320',timeValue);
+			chart.applyNewData();
+
+
+			/**
+			 * @disc: 获取交易对K线图
+			 * @params: tradingHash
+			 * @params: type
+			 * @date: 2019-12-16 10:41
+			 * @author: Wave
+			 */
+			async getTradingGet(tradingHash, type) {
+				//this.chartLoading = true;
+				let timestamp = new Date().getTime();
+				try {
+					let url = '/view/kLine/list';
+					let data = {
+						"tradingHash": tradingHash,
+						"type": type,
+						"startTime": timestamp - 60000 * this.timeValue * 500,
+						"endTime": timestamp,
+						"limit": 500
+					};
+					console.log(data);
+					let tradingGetRes = await dexPost(url, data);
+					console.log(tradingGetRes);
+					if (!tradingGetRes.success) {
+						this.chartLoading = true;
+						return {
+							success: false,
+							data: []
+						}
+					}
+					for (let item of tradingGetRes.result) {
+						item.timestamp = Number((item.time));
+						item.open = Number(item.open);
+						item.close = Number(item.close);
+						item.high = Number(item.high);
+						item.low = Number(item.low);
+						item.volume = Number(item.volume);
+						item.turnover = 0;
+					}
+					//this.chartLoading = false;
+					return {
+						success: true,
+						data: tradingGetRes.result
+					}
+				} catch (err) {
+					//this.chartLoading = true;
+					console.log(err);
+					return {
+						success: false,
+						data: []
+					};
+				}
+			},
+
+
+			/* 			document.addEventListener('UniAppJSBridgeReady', function() {
+							document.getElementById("buy").addEventListener("click", function() {
+								uni.postMessage({
+									data: {
+										symbol: symbol,
+										type: 1
+									}
+								});
+								setTimeout(() => {
+									uni.switchTab({
+										url: "/pages/trade/main"
+									})
+								}, 500);
+							});
+							document.getElementById("sell").addEventListener("click", function() {
+								uni.postMessage({
+									data: {
+										symbol: symbol,
+										type: 2
+									}
+								});
+								setTimeout(() => {
+									uni.switchTab({
+										url: "/pages/trade/main"
+									})
+								}, 500);
+							});
+							uni.getEnv(function(res) {
+								console.log('当前环境：' + JSON.stringify(res));
+							});
+						});
+
+						function GetQueryString(name) {
+							var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+							var r = window.location.search.substr(1).match(reg);
+							if (r != null) return unescape(r[2]);
+							return null;
+						}
+						var symbol = GetQueryString("symbol");
+						document.title = symbol;
+						var kline = null;
+
+						function createKline() {
+							if (kline != null) {
+								kline.destroy();
+							}
+							kline = new Kline({
+								element: "#kline_container",
+								width: window.screen.width,
+								height: window.screen.height - 250,
+								theme: 'dark', // light/dark
+								language: 'zh-cn', // zh-cn/en-us/zh-tw
+								ranges: ["1w", "1d", "1h", "30m", "15m", "5m", "1m", "line"],
+								symbol: "BTC",
+								symbolName: "BTC/USD",
+								type: "poll", // poll/socket
+								url: "http://112.74.33.72/v2/s/trade/market/kline/" + symbol + "/1min",
+								limit: 1000,
+								intervalTime: 5000,
+								debug: true,
+								showTrade: false,
+								onResize: function(width, height) {
+									console.log("chart resized: " + width + " " + height);
+								},
+								filterData(res) {
+									return res;
+								}
+							});
+							kline.draw();
+						}
+						createKline(); */
+		</script>
+
+	</body>
+
+</html>
